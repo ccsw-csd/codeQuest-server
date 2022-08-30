@@ -1,6 +1,6 @@
-# GTE Manager
+# CodeQuest
 
-Parte backend del aplicativo GTE Manager
+Parte backend del aplicativo CodeQuest
 
 ## Instalación
 
