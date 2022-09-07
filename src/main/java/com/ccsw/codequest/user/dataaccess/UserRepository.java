@@ -1,4 +1,4 @@
-package com.ccsw.codequest.user;
+package com.ccsw.codequest.user.dataaccess;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

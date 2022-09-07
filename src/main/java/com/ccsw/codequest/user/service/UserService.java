@@ -1,4 +1,4 @@
-package com.ccsw.codequest.user;
+package com.ccsw.codequest.user.service;
 
 import com.ccsw.codequest.config.security.UserInfoDto;
 import com.ccsw.codequest.user.model.User;

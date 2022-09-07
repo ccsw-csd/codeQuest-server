@@ -18,6 +18,7 @@
 		<java.version>11</java.version>
 		<devon4j.version>2021.04.003</devon4j.version>
 		<jsonwebtoken.version>0.7.0</jsonwebtoken.version>
+		<graalvm.version>22.0.0.2</graalvm.version>
 	</properties>
 
 	<dependencyManagement>
@@ -79,17 +80,28 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- Console Execution -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.7</version>
+		</dependency>
+		
+
 		<!-- Testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		
 	</dependencies>
 
 	<build>

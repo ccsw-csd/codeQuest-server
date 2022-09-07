@@ -1,10 +1,11 @@
-package com.ccsw.codequest.user;
+package com.ccsw.codequest.user.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ccsw.codequest.config.security.UserInfoDto;
+import com.ccsw.codequest.user.dataaccess.UserRepository;
 import com.ccsw.codequest.user.model.User;
 
 /**

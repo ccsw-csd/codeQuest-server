@@ -9,7 +9,6 @@ import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
@@ -31,7 +30,7 @@ public class JsonWebTokenAuthenticationProvider implements AuthenticationProvide
      * {@inheritDoc}
      */
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    public Authentication authenticate(Authentication authentication) {
 
         Authentication authenticatedUser = null;
 

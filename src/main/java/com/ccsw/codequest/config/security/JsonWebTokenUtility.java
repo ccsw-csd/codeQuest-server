@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.ccsw.codequest.user.UserService;
+import com.ccsw.codequest.user.service.UserService;
 
 /**
  * @author ccsw
