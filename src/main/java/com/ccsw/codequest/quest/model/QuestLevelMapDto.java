@@ -1,5 +1,7 @@
 package com.ccsw.codequest.quest.model;
 
+import java.util.List;
+
 public class QuestLevelMapDto {
 
     private QuestDto quest;
@@ -8,7 +10,7 @@ public class QuestLevelMapDto {
 
     private String name;
 
-    private String[][] tiles;
+    private List<List<Integer>> map;
 
     private String lib;
 
@@ -59,20 +61,6 @@ public class QuestLevelMapDto {
     }
 
     /**
-     * @return the tiles
-     */
-    public String[][] getTiles() {
-        return tiles;
-    }
-
-    /**
-     * @param tiles the tiles to set
-     */
-    public void setTiles(String[][] tiles) {
-        this.tiles = tiles;
-    }
-
-    /**
      * @return the lib
      */
     public String getLib() {
@@ -112,6 +100,20 @@ public class QuestLevelMapDto {
      */
     public void setChapterInfo(String chapterInfo) {
         this.chapterInfo = chapterInfo;
+    }
+
+    /**
+     * @return the map
+     */
+    public List<List<Integer>> getMap() {
+        return map;
+    }
+
+    /**
+     * @param map the map to set
+     */
+    public void setMap(List<List<Integer>> map) {
+        this.map = map;
     }
 
 }

@@ -50,7 +50,7 @@ function simulate() : GameInfo {
 		if (gameStatus == GameStatus.ForbiddenAbilities) {
 			gameInfo.turns = [];
 			gameInfo.status = gameStatus;
-			break;
+			return gameInfo;
 		}
 		
 		let turnInfo : TurnInfo = new TurnInfo();
@@ -65,11 +65,10 @@ function simulate() : GameInfo {
 
 		if (gameStatus != GameStatus.Play) {
 			gameInfo.status = gameStatus;
-			break;
+			return gameInfo;
 		}
 	}
 
-	return gameInfo;
 }
 
 
