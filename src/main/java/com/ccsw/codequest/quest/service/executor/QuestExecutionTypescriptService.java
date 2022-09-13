@@ -9,7 +9,6 @@ import java.nio.file.Path;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -35,7 +34,8 @@ public class QuestExecutionTypescriptService implements QuestExecutionService {
 
         try {
 
-            File rootDir = new ClassPathResource("quest/castleTypescript").getFile();
+            //File rootDir = new ClassPathResource("quest/castleTypescript").getFile();
+            File rootDir = new File("C:\\sources\\codequest\\server\\src\\main\\resources\\quest\\castleTypescript");
             File binDir = new File(rootDir, "bin");
 
             prepareProject(rootDir, code, questLevelMap);

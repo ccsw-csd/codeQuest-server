@@ -73,8 +73,20 @@ public class SystemCommandExecutor {
         });
         thread.start();
 
-        String stderr = IOUtils.toString(proc.getErrorStream(), Charset.defaultCharset());
-        String stdout = IOUtils.toString(proc.getInputStream(), Charset.defaultCharset());
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
+
+        String stderr = null;
+        String stdout = null;
+
+        if (proc.getErrorStream().available() > 0)
+            stderr = IOUtils.toString(proc.getErrorStream(), Charset.defaultCharset());
+
+        if (proc.getInputStream().available() > 0)
+            stdout = IOUtils.toString(proc.getInputStream(), Charset.defaultCharset());
 
         if (StringUtils.hasText(stdout) && stdout.endsWith("\r\n")) {
             stdout = stdout.substring(0, stdout.length() - 2);

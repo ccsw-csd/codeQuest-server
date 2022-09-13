@@ -1,4 +1,4 @@
-/* rm -rf ./bin && npx tsc && node bin\Application.js */
+/* npx tsc && node bin\Application.js */
 
 import { GameEvent } from './game/GameEvent';
 import { Game } from './game/Game';
@@ -61,7 +61,10 @@ function simulate() : GameInfo {
 		turn++;
 		gameInfo.turns.push(turnInfo);
 
-		if (turn > 20) gameStatus = GameStatus.LimitTurn;
+		if (turn > 20) {
+			gameInfo.status = GameStatus.LimitTurn;
+			return gameInfo;
+		}
 
 		if (gameStatus != GameStatus.Play) {
 			gameInfo.status = gameStatus;

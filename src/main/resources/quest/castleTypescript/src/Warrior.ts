@@ -4,6 +4,7 @@ import { Game } from "./game/Game";
 import { Position } from "./game/Position";
 import { Tile } from "./game/Tile";
 import { TileType } from "./types/TileType";
+import { Direction } from "./types/Direction";
 
 export class Warrior {
 
@@ -12,8 +13,8 @@ export class Warrior {
 	hasSword : boolean = false;
 	reachesLadder: boolean = false;
 
-	damageMin: number = 5;
-	damageMax: number = 10;
+	damageMin: number = 10;
+	damageMax: number = 15;
 
 	
 	abilitiesUsedPerTurn: number = 0;
@@ -30,20 +31,20 @@ export class Warrior {
 		this.position = new Position(x, y);
 	}
 
-	public walk(direction?: string): void {	
+	public walk(direction?: Direction): void {	
 		this.abilitiesUsedPerTurn++;
-		if (direction == null) direction = 'forward';
+		if (direction == null) direction = Direction.Right;
 
 		let tile : Tile = this.getNextTile(direction);
 
-		if (this.checkWalkValid(tile) == false) {
+		if (tile.checkWalkValid() == false) {
 			this.events.push(new GameEvent('El jugador no puede '+this.translateDirection(direction)+'r.', GameEventType.DontMove)); 
 			return;
 		}
 
 		this.map[this.position.y][this.position.x] = 0;
 
-		if (direction == 'forward') {
+		if (direction == Direction.Right) {
 			this.events.push(new GameEvent('El jugador avanza su posición.', GameEventType.Move));
 			this.position.x++;	
 		}
@@ -52,7 +53,7 @@ export class Warrior {
 			this.position.x--;
 		}
 
-		if (tile.tile == 98) {
+		if (tile.isSword()) {
 			this.map[this.position.y][this.position.x] = 0;
 			this.hasSword = true;
 			this.events.push(new GameEvent('El jugador coge la espada.', GameEventType.Info));
@@ -61,20 +62,22 @@ export class Warrior {
 			this.damageMax = 24;
 		}
 		
-		if (tile.type == TileType.Stairs) {
+		if (tile.getTileType() == TileType.Exit) {
 			this.reachesLadder = true;
-			this.events.push(new GameEvent('El jugador llega a la escalera y sube al siguiente piso.', GameEventType.Finish));
+
+			if (tile.tile == 99) this.events.push(new GameEvent('El jugador llega a la escalera y sube al siguiente piso.', GameEventType.Finish));
+			if (tile.tile == 98) this.events.push(new GameEvent('El jugador atraviesa la puerta y accede a una nueva sala.', GameEventType.Finish));
 		}
 
 		this.map[this.position.y][this.position.x] = 11;
 	}
 
-	public attack(direction?: string): void {
+	public attack(direction?: Direction): void {
 		this.abilitiesUsedPerTurn++;
-		if (direction == null) direction = 'forward';
+		if (direction == null) direction = Direction.Right;
 
 		let tile = this.getNextTile(direction);
-		if (tile.type == TileType.Enemy) {
+		if (tile.getTileType() == TileType.Enemy) {
 
 			let damage = this.getRandomInt(this.damageMin, this.damageMax);
 			let enemy = this.level.getEnemyAtTile(tile);
@@ -84,23 +87,26 @@ export class Warrior {
 				enemy.hurt(damage);
 			}
 		}
+		else {
+			this.events.push(new GameEvent('El jugador falla su ataque. En esa posición no hay nadie al que atacar.', GameEventType.Info));
+		}
 
 	}
 	
-	public lookAt(direction?: string): any {
-		if (direction == null) direction = 'forward';
+	public lookAt(direction?: Direction): TileType {
+		if (direction == null) direction = Direction.Right;
 
 		try {
-			return this.getNextTile(direction);
+			return this.getNextTile(direction).getTileType();
 		} catch (e) {
-			return null
+			return TileType.Empty
 		}
 	
 	}	
 	
 	public think(message: string): void {
 
-		this.events.push(new GameEvent(message, GameEventType.Think));
+		this.events.push(new GameEvent("El jugador piensa: "+message, GameEventType.Think));
 	}
 
 
@@ -134,45 +140,29 @@ export class Warrior {
 		return this.abilitiesUsedPerTurn <= 1;
 	}
 	
-	private translateDirection(direction : string) : string {
-		if (direction == 'forward') return 'avanza';
+	private translateDirection(direction : Direction) : string {
+		if (direction == Direction.Right) return 'avanza';
 		return 'retrocede';
 	}
 	
-	private getNextTile(direction: string): Tile {
+	private getNextTile(direction: Direction): Tile {
 		let y = this.position.y;
 		let x = this.position.x;
 
-		if (direction == 'forward') x++;
+		if (direction == Direction.Right) x++;
 		else x--;
 
 		let nextTile : number = this.map[y][x];
 
-		return {
+		return new Tile({
 			position: new Position(x, y),
-			tile: nextTile,
-			type: this.getTileType(nextTile)
-		};
+			tile: nextTile
+		});
 
 
 	}
 
-	private getTileType(tile: number): TileType {
-
-		if (tile > 0 && tile < 10) return TileType.Wall;
-		if (tile == 99) return TileType.Stairs;
-		if (tile > 20 && tile < 30) return TileType.Enemy;
-		return TileType.Empty;
-	}
-
-
-	private checkWalkValid(tile: Tile): boolean {
-
-		if (tile.type == TileType.Enemy) return false;
-		if (tile.type == TileType.Wall) return false;
-
-		return true;
-	}
+	
 
 	private getRandomInt(min: number, max: number) : number {
 		min = Math.ceil(min);

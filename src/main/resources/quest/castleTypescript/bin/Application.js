@@ -1,5 +1,5 @@
 "use strict";
-/* rm -rf ./bin && npx tsc && node bin\Application.js */
+/* npx tsc && node bin\Application.js */
 Object.defineProperty(exports, "__esModule", { value: true });
 const Game_1 = require("./game/Game");
 const GameStatus_1 = require("./game/GameStatus");
@@ -35,7 +35,7 @@ function simulate() {
         if (gameStatus == GameStatus_1.GameStatus.ForbiddenAbilities) {
             gameInfo.turns = [];
             gameInfo.status = gameStatus;
-            break;
+            return gameInfo;
         }
         let turnInfo = new TurnInfo();
         turnInfo.events = [].concat(game.events);
@@ -43,14 +43,15 @@ function simulate() {
         turnInfo.health = game.warrior.health;
         turn++;
         gameInfo.turns.push(turnInfo);
-        if (turn > 20)
-            gameStatus = GameStatus_1.GameStatus.LimitTurn;
+        if (turn > 20) {
+            gameInfo.status = GameStatus_1.GameStatus.LimitTurn;
+            return gameInfo;
+        }
         if (gameStatus != GameStatus_1.GameStatus.Play) {
             gameInfo.status = gameStatus;
-            break;
+            return gameInfo;
         }
     }
-    return gameInfo;
 }
 function cloneMap(map) {
     let newMap = [].concat(map);

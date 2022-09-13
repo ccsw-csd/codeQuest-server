@@ -2,15 +2,18 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Player = void 0;
 const TileType_1 = require("../types/TileType");
-/** comentario
- de varias
- linea **/
+/**
+ *
+ * Comportamiento del jugador
+ *
+ */
 class Player {
-    play(warrior) { if (warrior.lookAt().type == TileType_1.TileType.Enemy) {
-        warrior.attack();
+    play(warrior) {
+        //TODO: Implementar logica del jugador
+        if (TileType_1.TileType.Enemy == warrior.lookAt())
+            warrior.attack();
+        else
+            warrior.walk();
     }
-    else {
-        warrior.walk();
-    } warrior.think('Me queda: ' + warrior.health); }
 }
 exports.Player = Player;
